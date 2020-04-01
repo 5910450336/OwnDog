@@ -9,6 +9,12 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  // Explicit
+  final _formKey = GlobalKey<FormState>();
+  GlobalKey<ScaffoldState> scaffoldKey =
+      GlobalKey(); // เอาไว้เรียกใช้ scaffold จากที่อื่นๆ
+  String emailString, passwordString;
+
   // Method
   @override
   void initState() {
@@ -56,17 +62,21 @@ class _LoginPageState extends State<LoginPage> {
       width: 350.0,
       child: TextFormField(
         decoration: InputDecoration(
-            // icon: Icon(
-            //   Icons.email,
-            //   size: 25.0,
-            //   color: Colors.brown,
-            // ),
-            labelText: 'E-MAIL',
-            labelStyle: TextStyle(
-              color: Colors.brown,
-              fontSize: 14.0,
-              fontWeight: FontWeight.bold,
-            )),
+          // icon: Icon(
+          //   Icons.email,
+          //   size: 25.0,
+          //   color: Colors.brown,
+          // ),
+          labelText: 'E-MAIL',
+          labelStyle: TextStyle(
+            color: Colors.brown,
+            fontSize: 14.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        onSaved: (String value) {
+          emailString = value.trim();
+        },
       ),
     );
   }
@@ -88,6 +98,29 @@ class _LoginPageState extends State<LoginPage> {
             fontWeight: FontWeight.bold,
           ),
         ),
+        onSaved: (String value) {
+          passwordString = value.trim();
+        },
+      ),
+    );
+  }
+
+  Widget content() {
+    // appname/ username/passwordTextField
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: <Widget>[
+          showAppName(),
+          emailInputText(),
+          SizedBox(
+            height: 10.0,
+          ),
+          passwordInputText(),
+          SizedBox(
+            height: 35.0,
+          ),
+        ],
       ),
     );
   }
@@ -107,7 +140,12 @@ class _LoginPageState extends State<LoginPage> {
         shape: new RoundedRectangleBorder(
           borderRadius: new BorderRadius.circular(10.0),
         ),
-        onPressed: () {},
+        onPressed: () {
+          _formKey.currentState.save(); // เอาค่า email/password ส่งไป firebase
+          print(
+              "Click LOG IN\nemail = $emailString, password = $passwordString");
+          checkAuthen();
+        },
       ),
     );
   }
@@ -146,9 +184,34 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  Future<void> checkAuthen() async {
+    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    await firebaseAuth
+        .signInWithEmailAndPassword(
+            email: emailString, password: passwordString)
+        .then((response) {
+      print('Authen Success');
+      MaterialPageRoute materialPageRoute =
+          MaterialPageRoute(builder: (BuildContext context) => MyHomePage());
+      Navigator.of(context).pushAndRemoveUntil(
+          materialPageRoute, (Route<dynamic> route) => false);
+    }).catchError((response) {
+      alertScaffold(response.message);
+    });
+  }
+
+  void alertScaffold(String msg) {
+    scaffoldKey.currentState.showSnackBar(SnackBar(
+        // Show Error
+        content: Text(msg, style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.red,
+      ));
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       body: SafeArea(
         child: Container(
           decoration: BoxDecoration(
@@ -166,15 +229,7 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(
                     height: 10.0,
                   ),
-                  showAppName(),
-                  emailInputText(),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  passwordInputText(),
-                  SizedBox(
-                    height: 35.0,
-                  ),
+                  content(),
                   showButton(),
                   SizedBox(
                     height: 10.0,

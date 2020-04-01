@@ -21,7 +21,7 @@ class _RegisterPageState extends State<RegisterPage> {
           print('Click OK');
 
           if (_formKey.currentState.validate()) {
-            _formKey.currentState.save();
+            _formKey.currentState.save(); // ถ้าผ่านจะเอาอันที่ onsaved มาเก็บบันทึกค่าไว้
             print(
                 'name = $nameString, email = $emailString, password = $passwordString, phone = $phoneString');
             registerThread();
@@ -210,6 +210,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Widget phoneInputText() {
     return TextFormField(
+      keyboardType: TextInputType.phone,
       decoration: InputDecoration(
         icon: Icon(
           Icons.contact_phone,
