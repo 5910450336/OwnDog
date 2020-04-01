@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:own_dog/homePage.dart';
 import 'package:own_dog/registerPage.dart';
 
 class LoginPage extends StatefulWidget {
@@ -7,8 +9,26 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   // Method
+  @override
+  void initState() {
+    super.initState();
+    checkStatus();
+  }
+
+  Future<void> checkStatus() async {
+    // check สถานะว่าเครื่องเราทำการ Log in อยู่หรือเปล่า
+    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    FirebaseUser firebaseUser =
+        await firebaseAuth.currentUser(); //ให้ทำการ connect กับ Firebase
+    if (firebaseUser != null) {
+      MaterialPageRoute materialPageRoute =
+          MaterialPageRoute(builder: (BuildContext context) => MyHomePage());
+      Navigator.of(context).pushAndRemoveUntil(
+          materialPageRoute, (Route<dynamic> route) => false);
+    }
+  }
+
   Widget showLogo() {
     return Container(
       width: 140.0,
@@ -40,9 +60,7 @@ class _LoginPageState extends State<LoginPage> {
           color: Colors.black,
         ),
       ),
-      onPressed: () {
-        
-      },
+      onPressed: () {},
     );
   }
 
@@ -53,7 +71,8 @@ class _LoginPageState extends State<LoginPage> {
       onPressed: () {
         print("Click Register");
 
-        MaterialPageRoute materialPageRoute = new MaterialPageRoute(builder: (BuildContext context) => RegisterPage());
+        MaterialPageRoute materialPageRoute = new MaterialPageRoute(
+            builder: (BuildContext context) => RegisterPage());
         Navigator.of(context).push(materialPageRoute);
       },
     );
