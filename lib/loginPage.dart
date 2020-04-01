@@ -51,30 +51,85 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget logInButton() {
-    return RaisedButton(
-      color: Colors.yellow[800],
-      child: Text(
-        'LOG IN',
-        style: TextStyle(
-          color: Colors.black,
+  Widget emailInputText() {
+    return Container(
+      width: 350.0,
+      child: TextFormField(
+        decoration: InputDecoration(
+            // icon: Icon(
+            //   Icons.email,
+            //   size: 25.0,
+            //   color: Colors.brown,
+            // ),
+            labelText: 'E-MAIL',
+            labelStyle: TextStyle(
+              color: Colors.brown,
+              fontSize: 14.0,
+              fontWeight: FontWeight.bold,
+            )),
+      ),
+    );
+  }
+
+  Widget passwordInputText() {
+    return Container(
+      width: 350.0,
+      child: TextFormField(
+        decoration: InputDecoration(
+          // icon: Icon(
+          //   Icons.lock_outline,
+          //   size: 25.0,
+          //   color: Colors.brown,
+          // ),
+          labelText: 'PASSWORD',
+          labelStyle: TextStyle(
+            color: Colors.brown,
+            fontSize: 14.0,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
-      onPressed: () {},
+    );
+  }
+
+  Widget logInButton() {
+    return SizedBox(
+      height: 40,
+      width: 120,
+      child: RaisedButton(
+        color: Colors.yellow[800],
+        child: Text(
+          'LOG IN',
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
+        shape: new RoundedRectangleBorder(
+          borderRadius: new BorderRadius.circular(10.0),
+        ),
+        onPressed: () {},
+      ),
     );
   }
 
   Widget registerButton() {
-    return RaisedButton(
-      color: Colors.blueGrey[100],
-      child: Text('REGISTER'),
-      onPressed: () {
-        print("Click Register");
+    return SizedBox(
+      height: 40,
+      width: 120,
+      child: RaisedButton(
+        color: Colors.blueGrey[100],
+        child: Text('REGISTER'),
+        shape: new RoundedRectangleBorder(
+          borderRadius: new BorderRadius.circular(10.0),
+        ),
+        onPressed: () {
+          print("Click Register");
 
-        MaterialPageRoute materialPageRoute = new MaterialPageRoute(
-            builder: (BuildContext context) => RegisterPage());
-        Navigator.of(context).push(materialPageRoute);
-      },
+          MaterialPageRoute materialPageRoute = new MaterialPageRoute(
+              builder: (BuildContext context) => RegisterPage());
+          Navigator.of(context).push(materialPageRoute);
+        },
+      ),
     );
   }
 
@@ -84,7 +139,7 @@ class _LoginPageState extends State<LoginPage> {
       children: <Widget>[
         logInButton(),
         SizedBox(
-          width: 10.0,
+          width: 15.0,
         ),
         registerButton(),
       ],
@@ -103,13 +158,29 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           child: Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                showLogo(),
-                showAppName(),
-                showButton(),
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  showLogo(),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  showAppName(),
+                  emailInputText(),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  passwordInputText(),
+                  SizedBox(
+                    height: 35.0,
+                  ),
+                  showButton(),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

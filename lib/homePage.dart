@@ -75,6 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       body: Text('OWOWOWOWO'),
+      bottomNavigationBar: BottomAppBar(),
     );
   }
 }
