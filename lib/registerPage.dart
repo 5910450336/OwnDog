@@ -8,6 +8,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   // Explicit
   final _formKey = new GlobalKey<FormState>();
+  String nameString, emailString, passwordString;
 
   // Method
   Widget okRegisterButton() {
@@ -18,6 +19,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
+            print('name = $nameString, email = $emailString, password = $passwordString');
           }
         });
   }
@@ -44,6 +46,8 @@ class _RegisterPageState extends State<RegisterPage> {
         } else {
           return null;
         }
+      }, onSaved: (String value){
+        nameString = value.trim(); // ตัดช่องว่างอัตโนมัติ
       },
     );
   }
@@ -72,6 +76,9 @@ class _RegisterPageState extends State<RegisterPage> {
           return null;
         }
       },
+      onSaved: (String value) {
+        emailString = value.trim();
+      },
     );
   }
 
@@ -94,9 +101,12 @@ class _RegisterPageState extends State<RegisterPage> {
       validator: (String value) {
         if (value.length < 6) {
           return 'Password More 6 character';
-        } else{
+        } else {
           return null;
         }
+      },
+      onSaved: (String value){
+        passwordString = value.trim();
       },
     );
   }
