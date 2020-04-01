@@ -1,19 +1,23 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:own_dog/registerPage.dart';
 
-class MyLoginPage extends StatefulWidget {
+class LoginPage extends StatefulWidget {
   @override
-  _MyLoginPageState createState() => _MyLoginPageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _MyLoginPageState extends State<MyLoginPage> {
+class _LoginPageState extends State<LoginPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  // Method
   Widget showLogo() {
     return Container(
-      width: 120.0,
-      height: 120.0,
-      child: Image.asset('images/logoDog.png'),
+      width: 140.0,
+      height: 140.0,
+      child: Image.asset(
+        'images/logoDog.png',
+      ),
     );
   }
 
@@ -21,21 +25,26 @@ class _MyLoginPageState extends State<MyLoginPage> {
     return Text(
       'OWNER DOG',
       style: TextStyle(
-          fontSize: 35.0,
-          fontWeight: FontWeight.bold,
-          color: Colors.brown[900],
-          fontFamily: 'Mitr'),
+        fontSize: 35.0,
+        fontWeight: FontWeight.bold,
+        color: Colors.brown[900],
+        fontFamily: 'Mitr',
+      ),
     );
   }
 
   Widget logInButton() {
     return RaisedButton(
-      color: Colors.yellowAccent[700],
+      color: Colors.yellow[800],
       child: Text(
         'LOG IN',
-        style: TextStyle(color: Colors.black),
+        style: TextStyle(
+          color: Colors.black,
+        ),
       ),
-      onPressed: () {},
+      onPressed: () {
+        
+      },
     );
   }
 
@@ -43,7 +52,12 @@ class _MyLoginPageState extends State<MyLoginPage> {
     return RaisedButton(
       color: Colors.blueGrey[100],
       child: Text('REGISTER'),
-      onPressed: () {},
+      onPressed: () {
+        print("Click Register");
+
+        MaterialPageRoute route = new MaterialPageRoute(builder: (BuildContext context) => RegisterPage());
+        Navigator.of(context).push(route);
+      },
     );
   }
 
@@ -64,16 +78,25 @@ class _MyLoginPageState extends State<MyLoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: RadialGradient(
+              colors: [Colors.yellow[100], Colors.yellowAccent[700]],
+              radius: 0.7,
+            ),
+          ),
           child: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            showLogo(), 
-            showAppName(), 
-            showButton()
-          ],
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                showLogo(),
+                showAppName(),
+                showButton(),
+              ],
+            ),
+          ),
         ),
-      )),
+      ),
     );
   }
 }
