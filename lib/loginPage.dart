@@ -53,8 +53,8 @@ class _LoginPageState extends State<LoginPage> {
       onPressed: () {
         print("Click Register");
 
-        MaterialPageRoute route = new MaterialPageRoute(builder: (BuildContext context) => RegisterPage());
-        Navigator.of(context).push(route);
+        MaterialPageRoute materialPageRoute = new MaterialPageRoute(builder: (BuildContext context) => RegisterPage());
+        Navigator.of(context).push(materialPageRoute);
       },
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:own_dog/homePage.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -10,7 +11,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   // Explicit
   final _formKey = new GlobalKey<FormState>(); //key ที่เช็ค validation
-  String nameString, emailString, passwordString, phoneString;
+  String nameString, emailString, passwordString, tempPassword, phoneString;
 
   // Method
   Widget okRegisterButton() {
@@ -31,12 +32,14 @@ class _RegisterPageState extends State<RegisterPage> {
   Future<void> registerThread() async {
     // Method Add Email/Password to Firebase
     FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-  
+
     await firebaseAuth
         .createUserWithEmailAndPassword(
             email: emailString, password: passwordString)
         .then((response) {
       print('Register Success for Email = $emailString');
+
+      setupDisplayName();
     }).catchError((response) {
       String title = response.code;
       String message = response.message;
@@ -46,15 +49,27 @@ class _RegisterPageState extends State<RegisterPage> {
     });
   }
 
+  Future<void> setupDisplayName() async {
+    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    await firebaseAuth.currentUser().then((response){
+      UserUpdateInfo userUpdateInfo = UserUpdateInfo();
+      userUpdateInfo.displayName = nameString;
+      response.updateProfile(userUpdateInfo);
+
+      MaterialPageRoute materialPageRoute = MaterialPageRoute(builder: (BuildContext context) => MyHomePage());
+      Navigator.of(context).pushAndRemoveUntil(materialPageRoute, (Route<dynamic> route) => false);
+    });
+  }
+
   void myAlert(String title, String message) {
-    // Show Alert
+    // Show Alert Box
     showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: ListTile(
               leading: Icon(
-                Icons.add_alert,
+                Icons.error,
                 color: Colors.red,
                 size: 40,
               ),
@@ -164,6 +179,35 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
+  // Widget rePasswordInputText() {
+  //   return TextFormField(
+  //     decoration: InputDecoration(
+  //       icon: Icon(
+  //         Icons.lock,
+  //         color: Colors.grey[800],
+  //         size: 35.0,
+  //       ),
+  //       labelText: 'RE-PASSWORD',
+  //       labelStyle: TextStyle(
+  //         fontWeight: FontWeight.bold,
+  //         color: Colors.black,
+  //       ),
+  //       helperText: 'Re-Password must match Password',
+  //       helperStyle: TextStyle(fontStyle: FontStyle.italic),
+  //     ),
+  //     validator: (String value) {
+  //       if (value != tempPassword) {
+  //         return 'password did not match';
+  //       } else {
+  //         return null;
+  //       }
+  //     },
+  //     onSaved: (String value) {
+  //       passwordString = value.trim();
+  //     },
+  //   );
+  // }
+
   Widget phoneInputText() {
     return TextFormField(
       decoration: InputDecoration(
@@ -209,6 +253,7 @@ class _RegisterPageState extends State<RegisterPage> {
             nameInputText(),
             emailInputText(),
             passwordInputText(),
+            // rePasswordInputText(),
             phoneInputText(),
           ],
         ),
