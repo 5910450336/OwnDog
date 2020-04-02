@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:own_dog/screens/profilePage.dart';
+import 'package:own_dog/widget/predict_Dog.dart';
 import 'package:own_dog/widget/show_List_Dog.dart';
 import 'package:own_dog/widget/add_List_Dog.dart';
 
@@ -10,7 +11,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   // Explcit
-  List<Widget> showWidgets = [ShowListDog(), AddListDog()];
+  List<Widget> showWidgets = [ShowListDog(), PredictDogWidget(), AddListDog()];
   int index = 0;
   String login = '...';
 
@@ -36,6 +37,13 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  BottomNavigationBarItem findDogNav() {
+    return BottomNavigationBarItem(
+      icon: Icon(Icons.pageview, size: 40),
+      title: Text('Find Dog'),
+    );
+  }
+
   BottomNavigationBarItem regisDogNav() {
     return BottomNavigationBarItem(
       icon: Icon(Icons.add_box, size: 40),
@@ -53,6 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
       currentIndex: index,
       items: <BottomNavigationBarItem>[
         homeNav(),
+        findDogNav(),
         regisDogNav(),
       ],
     );
@@ -62,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home DOG'),
+        title: Text('DOGS'),
         elevation: 1.0,
         backgroundColor: Colors.yellowAccent[700],
         actions: <Widget>[
