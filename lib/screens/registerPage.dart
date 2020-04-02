@@ -17,11 +17,13 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget okRegisterButton() {
     return IconButton(
         icon: Icon(Icons.done),
+        tooltip: 'DONE',
         onPressed: () {
           print('Click OK');
 
           if (_formKey.currentState.validate()) {
-            _formKey.currentState.save(); // ถ้าผ่านจะเอาอันที่ onsaved มาเก็บบันทึกค่าไว้
+            _formKey.currentState
+                .save(); // ถ้าผ่านจะเอาอันที่ onsaved มาเก็บบันทึกค่าไว้
             print(
                 'name = $nameString, email = $emailString, password = $passwordString, phone = $phoneString');
             registerThread();
@@ -51,13 +53,15 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Future<void> setupDisplayName() async {
     FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-    await firebaseAuth.currentUser().then((response){
+    await firebaseAuth.currentUser().then((response) {
       UserUpdateInfo userUpdateInfo = UserUpdateInfo();
       userUpdateInfo.displayName = nameString;
       response.updateProfile(userUpdateInfo);
 
-      MaterialPageRoute materialPageRoute = MaterialPageRoute(builder: (BuildContext context) => MyHomePage());
-      Navigator.of(context).pushAndRemoveUntil(materialPageRoute, (Route<dynamic> route) => false);
+      MaterialPageRoute materialPageRoute =
+          MaterialPageRoute(builder: (BuildContext context) => MyHomePage());
+      Navigator.of(context).pushAndRemoveUntil(
+          materialPageRoute, (Route<dynamic> route) => false);
     });
   }
 
@@ -233,7 +237,7 @@ class _RegisterPageState extends State<RegisterPage> {
         }
       },
       onSaved: (String value) {
-        phoneString = value.trim(); // ใส่ค่า phone 
+        phoneString = value.trim(); // ใส่ค่า phone
       },
     );
   }
