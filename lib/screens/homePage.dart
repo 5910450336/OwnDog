@@ -1,6 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:own_dog/screens/loginPage.dart';
 import 'package:own_dog/screens/profilePage.dart';
 
 class MyHomePage extends StatefulWidget {
