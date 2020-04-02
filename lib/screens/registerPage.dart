@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-import 'package:own_dog/homePage.dart';
+import 'package:own_dog/screens/homePage.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -233,7 +233,7 @@ class _RegisterPageState extends State<RegisterPage> {
         }
       },
       onSaved: (String value) {
-        nameString = value.trim(); // ตัดช่องว่างอัตโนมัติ
+        phoneString = value.trim(); // ใส่ค่า phone 
       },
     );
   }

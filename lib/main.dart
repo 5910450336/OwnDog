@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:own_dog/loginPage.dart';
+import 'package:own_dog/screens/loginPage.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,6 +11,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
+        fontFamily: 'Mitr',
       ),
       home: LoginPage(),
     );
