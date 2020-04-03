@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:own_dog/screens/login_page.dart';
+import 'dart:io' show Platform;
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -47,17 +48,27 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void myAlert() {
     showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return CupertinoAlertDialog(
-            title: Text('Are you sure?'),
-            content: Text('Do you want to SIGN OUT?'),
-            actions: <Widget>[
-              cancelButton(),
-              okButton(),
-            ],
-          );
-        });
+      context: context,
+      builder: (BuildContext context) {
+        return Platform.isIOS
+            ? CupertinoAlertDialog(
+                title: Text('Are you sure?'),
+                content: Text('Do you want to SIGN OUT?'),
+                actions: <Widget>[
+                  cancelButton(),
+                  okButton(),
+                ],
+              )
+            : AlertDialog(
+                title: Text('Are you sure?'),
+                content: Text('Do you want to SIGN OUT?'),
+                actions: <Widget>[
+                  cancelButton(),
+                  okButton(),
+                ],
+              );
+      },
+    );
   }
 
   Widget okButton() {
@@ -76,12 +87,16 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> processSignOut() async {
     // method sign out
     FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-    await firebaseAuth.signOut().then((response) {
-      MaterialPageRoute materialPageRoute =
-          MaterialPageRoute(builder: (BuildContext context) => LoginPage());
-      Navigator.of(context).pushAndRemoveUntil(
-          materialPageRoute, (Route<dynamic> route) => false);
-    });
+    await firebaseAuth.signOut().then(
+      (response) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (BuildContext context) => LoginPage(),
+          ),
+          (Route<dynamic> route) => false,
+        );
+      },
+    );
   }
 
   Widget cancelButton() {

@@ -29,11 +29,10 @@ class _LoginPageState extends State<LoginPage> {
     FirebaseUser firebaseUser =
         await firebaseAuth.currentUser(); //ให้ทำการ connect กับ Firebase
     if (firebaseUser != null) {
-      MaterialPageRoute materialPageRoute = MaterialPageRoute(
-        builder: (BuildContext context) => MyHomePage(),
-      );
       Navigator.of(context).pushAndRemoveUntil(
-        materialPageRoute,
+        MaterialPageRoute(
+          builder: (BuildContext context) => MyHomePage(),
+        ),
         (Route<dynamic> route) => false,
       );
     }

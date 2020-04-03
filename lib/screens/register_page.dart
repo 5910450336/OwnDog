@@ -10,7 +10,8 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   // Explicit
-  final _formKey = GlobalKey<FormState>(); //key ที่เช็ค validation
+  final GlobalKey<FormState> _formKey =
+      GlobalKey<FormState>(); //key ที่เช็ค validation
   String nameString, emailString, passwordString, tempPassword, phoneString;
 
   // Method
@@ -48,23 +49,25 @@ class _RegisterPageState extends State<RegisterPage> {
       String title = response.code;
       String message = response.message;
       print('title = $title, message = $message');
-
       myAlert(title, message);
     });
   }
 
   Future<void> setupDisplayName() async {
     FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-    await firebaseAuth.currentUser().then((response) {
-      UserUpdateInfo userUpdateInfo = UserUpdateInfo();
-      userUpdateInfo.displayName = nameString;
-      response.updateProfile(userUpdateInfo);
-
-      MaterialPageRoute materialPageRoute =
-          MaterialPageRoute(builder: (BuildContext context) => MyHomePage());
-      Navigator.of(context).pushAndRemoveUntil(
-          materialPageRoute, (Route<dynamic> route) => false);
-    });
+    await firebaseAuth.currentUser().then(
+      (response) {
+        UserUpdateInfo userUpdateInfo = UserUpdateInfo();
+        userUpdateInfo.displayName = nameString;
+        response.updateProfile(userUpdateInfo);
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (BuildContext context) => MyHomePage(),
+          ),
+          (Route<dynamic> route) => false,
+        );
+      },
+    );
   }
 
   void myAlert(String title, String message) {
@@ -121,9 +124,8 @@ class _RegisterPageState extends State<RegisterPage> {
           return null;
         }
       },
-      onSaved: (String value) {
-        nameString = value.trim(); // ตัดช่องว่างอัตโนมัติ
-      },
+      onSaved: (String value) =>
+          nameString = value.trim(), // ตัดช่องว่างอัตโนมัติ
     );
   }
 

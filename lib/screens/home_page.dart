@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:own_dog/screens/profile_page.dart';
-import 'package:own_dog/widget/predict_Dog.dart';
-import 'package:own_dog/widget/show_List_Dog.dart';
-import 'package:own_dog/widget/add_List_Dog.dart';
+import 'package:own_dog/widget/predict_dog.dart';
+import 'package:own_dog/widget/show_list_dog.dart';
+import 'package:own_dog/widget/add_list_dog.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -23,12 +23,11 @@ class _MyHomePageState extends State<MyHomePage> {
         size: 30,
       ),
       tooltip: 'Profile',
-      onPressed: () {
-        MaterialPageRoute materialPageRoute = MaterialPageRoute(
+      onPressed: () => Navigator.of(context).push(
+        MaterialPageRoute(
           builder: (BuildContext context) => ProfilePage(),
-        );
-        Navigator.of(context).push(materialPageRoute);
-      },
+        ),
+      ),
     );
   }
 
