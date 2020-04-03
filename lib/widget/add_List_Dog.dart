@@ -1,7 +1,11 @@
 import 'dart:io';
+import 'dart:math';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:own_dog/screens/homePage.dart';
 
 class AddListDog extends StatefulWidget {
   @override
@@ -11,7 +15,7 @@ class AddListDog extends StatefulWidget {
 class _AddListDogState extends State<AddListDog> {
   // Explicit
   File file;
-  String nameDog, detailDog;
+  String nameDog, detailDog, urlPicture;
 
   // Method
   Widget uploadButton() {
@@ -35,6 +39,7 @@ class _AddListDogState extends State<AddListDog> {
                 showAlert('No Detail', 'Please fill your dog detail');
               } else {
                 // Upload Value to Firebase
+                uploadPictureToStorage();
               }
             },
             icon: Icon(
@@ -54,6 +59,22 @@ class _AddListDogState extends State<AddListDog> {
     );
   }
 
+  Future<void> uploadPictureToStorage() async {
+    Random random = Random();
+    int rand = random.nextInt(100000);
+
+    FirebaseStorage firebaseStorage = FirebaseStorage.instance;
+    StorageReference storageReference =
+        firebaseStorage.ref().child('Dog/dog$rand.jpg');
+    StorageUploadTask storageUploadTask = storageReference.putFile(file);
+
+    //ถ้าอัพโลหดสำเร็จมันจะเก็บ url ภาพนั้นไว้
+    urlPicture =
+        await (await storageUploadTask.onComplete).ref.getDownloadURL();
+    print('urlPicture = $urlPicture');
+    inserValueToFirestore(); // method up value to firestore
+  }
+
   Future<void> showAlert(String title, String message) async {
     showDialog(
         context: context,
@@ -71,6 +92,22 @@ class _AddListDogState extends State<AddListDog> {
             ],
           );
         });
+  }
+
+  Future<void> inserValueToFirestore() async {
+    Firestore firestore = Firestore.instance;
+
+    Map<String, dynamic> map = Map();
+    map['name'] = nameDog;
+    map['detail'] = detailDog;
+    map['imagePath'] = urlPicture;
+
+    await firestore.collection('dogs').document().setData(map).then((value) {
+      print('Insert Success');
+      MaterialPageRoute materialPageRoute =
+          MaterialPageRoute(builder: (BuildContext context) => MyHomePage());
+      Navigator.of(context).pushAndRemoveUntil(materialPageRoute, (value) => false);
+    });
   }
 
   Widget nameInputForm() {
