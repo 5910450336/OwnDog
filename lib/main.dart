@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:own_dog/screens/loginPage.dart';
+import 'package:own_dog/screens/login_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
         // fontFamily: 'Mitr',
       ),
       home: LoginPage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -28,11 +29,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      
-    );
+    return Scaffold();
   }
 }

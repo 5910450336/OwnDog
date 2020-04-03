@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-import 'package:own_dog/screens/homePage.dart';
+import 'package:own_dog/screens/home_page.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -16,19 +16,21 @@ class _RegisterPageState extends State<RegisterPage> {
   // Method
   Widget okRegisterButton() {
     return IconButton(
-        icon: Icon(Icons.done),
-        tooltip: 'DONE',
-        onPressed: () {
-          print('Click OK');
+      icon: Icon(Icons.done),
+      tooltip: 'DONE',
+      onPressed: () {
+        print('Click OK');
 
-          if (_formKey.currentState.validate()) {
-            _formKey.currentState
-                .save(); // ถ้าผ่านจะเอาอันที่ onsaved มาเก็บบันทึกค่าไว้
-            print(
-                'name = $nameString, email = $emailString, password = $passwordString, phone = $phoneString');
-            registerThread();
-          }
-        });
+        if (_formKey.currentState.validate()) {
+          _formKey.currentState
+              .save(); // ถ้าผ่านจะเอาอันที่ onsaved มาเก็บบันทึกค่าไว้
+          print(
+            'name = $nameString, email = $emailString, password = $passwordString, phone = $phoneString',
+          );
+          registerThread();
+        }
+      },
+    );
   }
 
   Future<void> registerThread() async {
@@ -68,31 +70,32 @@ class _RegisterPageState extends State<RegisterPage> {
   void myAlert(String title, String message) {
     // Show Alert Box
     showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: ListTile(
-              leading: Icon(
-                Icons.error,
-                color: Colors.red,
-                size: 40,
-              ),
-              title: Text(
-                title,
-                style: TextStyle(color: Colors.red),
-              ),
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: ListTile(
+            leading: Icon(
+              Icons.error,
+              color: Colors.red,
+              size: 40,
             ),
-            content: Text(message),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              )
-            ],
-          );
-        });
+            title: Text(
+              title,
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+          content: Text(message),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      },
+    );
   }
 
   Widget nameInputText() {

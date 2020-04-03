@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:own_dog/screens/loginPage.dart';
+import 'package:own_dog/screens/login_page.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -24,7 +24,8 @@ class _ProfilePageState extends State<ProfilePage> {
     FirebaseAuth firebaseAuth = FirebaseAuth.instance;
     FirebaseUser firebaseUser =
         await firebaseAuth.currentUser(); // ดึง data ที่ user login ในขณะมา
-    setState(() { // ทำการ setstate refresh ใหม่
+    setState(() {
+      // ทำการ setstate refresh ใหม่
       login = firebaseUser.displayName;
     });
     print('Login = $login\nPhone = $phone');

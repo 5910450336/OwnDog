@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:own_dog/screens/profilePage.dart';
+import 'package:own_dog/screens/profile_page.dart';
 import 'package:own_dog/widget/predict_Dog.dart';
 import 'package:own_dog/widget/show_List_Dog.dart';
 import 'package:own_dog/widget/add_List_Dog.dart';
@@ -18,16 +18,18 @@ class _MyHomePageState extends State<MyHomePage> {
   //Method
   Widget profileButton() {
     return IconButton(
-        icon: Icon(
-          Icons.account_circle,
-          size: 30,
-        ),
-        tooltip: 'Profile',
-        onPressed: () {
-          MaterialPageRoute materialPageRoute = MaterialPageRoute(
-              builder: (BuildContext context) => ProfilePage());
-          Navigator.of(context).push(materialPageRoute);
-        });
+      icon: Icon(
+        Icons.account_circle,
+        size: 30,
+      ),
+      tooltip: 'Profile',
+      onPressed: () {
+        MaterialPageRoute materialPageRoute = MaterialPageRoute(
+          builder: (BuildContext context) => ProfilePage(),
+        );
+        Navigator.of(context).push(materialPageRoute);
+      },
+    );
   }
 
   BottomNavigationBarItem homeNav() {
@@ -71,7 +73,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('DOGS'),
+        title: Text('Own Dogs'),
+        centerTitle: true,
         elevation: 1.0,
         backgroundColor: Colors.yellowAccent[700],
         actions: <Widget>[

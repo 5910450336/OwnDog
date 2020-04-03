@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
-import 'package:own_dog/screens/homePage.dart';
-import 'package:own_dog/screens/registerPage.dart';
+import 'package:own_dog/screens/home_page.dart';
+import 'package:own_dog/screens/register_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -28,19 +29,25 @@ class _LoginPageState extends State<LoginPage> {
     FirebaseUser firebaseUser =
         await firebaseAuth.currentUser(); //ให้ทำการ connect กับ Firebase
     if (firebaseUser != null) {
-      MaterialPageRoute materialPageRoute =
-          MaterialPageRoute(builder: (BuildContext context) => MyHomePage());
+      MaterialPageRoute materialPageRoute = MaterialPageRoute(
+        builder: (BuildContext context) => MyHomePage(),
+      );
       Navigator.of(context).pushAndRemoveUntil(
-          materialPageRoute, (Route<dynamic> route) => false);
+        materialPageRoute,
+        (Route<dynamic> route) => false,
+      );
     }
   }
 
   Widget showLogo() {
-    return Container(
-      width: 140.0,
-      height: 140.0,
-      child: Image.asset(
-        'images/logoDog.png',
+    return SizedBox(
+      width: 200.0,
+      height: 200.0,
+      child: FlareActor(
+        'assets/flares/Doggo-storyoggo.flr',
+        alignment: Alignment.center,
+        fit: BoxFit.contain,
+        animation: 'stop',
       ),
     );
   }
@@ -62,11 +69,11 @@ class _LoginPageState extends State<LoginPage> {
       width: 350.0,
       child: TextFormField(
         decoration: InputDecoration(
-          // icon: Icon(
-          //   Icons.email,
-          //   size: 25.0,
-          //   color: Colors.brown,
-          // ),
+          icon: Icon(
+            Icons.email,
+            size: 25.0,
+            color: Colors.brown,
+          ),
           labelText: 'E-MAIL',
           labelStyle: TextStyle(
             color: Colors.brown,
@@ -86,11 +93,11 @@ class _LoginPageState extends State<LoginPage> {
       width: 350.0,
       child: TextFormField(
         decoration: InputDecoration(
-          // icon: Icon(
-          //   Icons.lock_outline,
-          //   size: 25.0,
-          //   color: Colors.brown,
-          // ),
+          icon: Icon(
+            Icons.lock_outline,
+            size: 25.0,
+            color: Colors.brown,
+          ),
           labelText: 'PASSWORD',
           labelStyle: TextStyle(
             color: Colors.brown,
@@ -143,7 +150,8 @@ class _LoginPageState extends State<LoginPage> {
         onPressed: () {
           _formKey.currentState.save(); // เอาค่า email/password ส่งไป firebase
           print(
-              "Click LOG IN\nemail = $emailString, password = $passwordString");
+            "Click LOG IN\nemail = $emailString, password = $passwordString",
+          );
           checkAuthen();
         },
       ),
@@ -160,13 +168,11 @@ class _LoginPageState extends State<LoginPage> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
-        onPressed: () {
-          print("Click Register");
-
-          MaterialPageRoute materialPageRoute = MaterialPageRoute(
-              builder: (BuildContext context) => RegisterPage());
-          Navigator.of(context).push(materialPageRoute);
-        },
+        onPressed: () => Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (BuildContext context) => RegisterPage(),
+          ),
+        ),
       ),
     );
   }
@@ -189,53 +195,57 @@ class _LoginPageState extends State<LoginPage> {
     await firebaseAuth
         .signInWithEmailAndPassword(
             email: emailString, password: passwordString)
-        .then((response) {
-      print('Authen Success');
-      MaterialPageRoute materialPageRoute =
-          MaterialPageRoute(builder: (BuildContext context) => MyHomePage());
-      Navigator.of(context).pushAndRemoveUntil(
-          materialPageRoute, (Route<dynamic> route) => false);
-    }).catchError((response) {
-      alertScaffold(response.message);
-    });
+        .then(
+          (response) => Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (BuildContext context) => MyHomePage(),
+            ),
+            (Route<dynamic> route) => false,
+          ),
+        )
+        .catchError(
+      (response) {
+        alertScaffold(response.message);
+      },
+    );
   }
 
   void alertScaffold(String msg) {
-    scaffoldKey.currentState.showSnackBar(SnackBar(
-      // Show Error
-      content: Text(msg, style: TextStyle(color: Colors.white)),
-      backgroundColor: Colors.red,
-    ));
+    scaffoldKey.currentState.showSnackBar(
+      SnackBar(
+        // Show Error
+        content: Text(msg, style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.red,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      body: SafeArea(
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: RadialGradient(
-              colors: [Colors.yellow[100], Colors.yellowAccent[700]],
-              radius: 0.7,
-            ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: RadialGradient(
+            colors: [Colors.yellow[100], Colors.yellowAccent[700]],
+            radius: 0.7,
           ),
-          child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  showLogo(),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  content(),
-                  showButton(),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                ],
-              ),
+        ),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                showLogo(),
+                SizedBox(
+                  height: 10.0,
+                ),
+                content(),
+                showButton(),
+                SizedBox(
+                  height: 10.0,
+                ),
+              ],
             ),
           ),
         ),

@@ -5,7 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:own_dog/screens/homePage.dart';
+import 'package:own_dog/screens/home_page.dart';
 
 class AddListDog extends StatefulWidget {
   @override
@@ -75,6 +75,36 @@ class _AddListDogState extends State<AddListDog> {
     inserValueToFirestore(); // method up value to firestore
   }
 
+  // Future<String> onImageUploading(File imagePath) async {
+  //   final StorageReference firebaseStorageRef =
+  //       FirebaseStorage.instance.ref().child('${Uuid().v1()}.png');
+  //   final StorageUploadTask task = firebaseStorageRef.putFile(imagePath);
+  //   StorageTaskSnapshot storageTaskSnapshot = await task.onComplete;
+  //   String downloadUrl = await storageTaskSnapshot.ref.getDownloadURL();
+  //   return downloadUrl;
+  // }
+
+  Future<void> inserValueToFirestore() async {
+    Firestore firestore = Firestore.instance;
+
+    Map<String, dynamic> map = Map();
+    map['name'] = nameDog;
+    map['detail'] = detailDog;
+    map['imagePath'] = urlPicture;
+
+    await firestore.collection('dogs').document().setData(map).then(
+      (value) {
+        print('Insert Success');
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (BuildContext context) => MyHomePage(),
+          ),
+          (value) => false,
+        );
+      },
+    );
+  }
+
   Future<void> showAlert(String title, String message) async {
     showDialog(
       context: context,
@@ -93,23 +123,6 @@ class _AddListDogState extends State<AddListDog> {
         );
       },
     );
-  }
-
-  Future<void> inserValueToFirestore() async {
-    Firestore firestore = Firestore.instance;
-
-    Map<String, dynamic> map = Map();
-    map['name'] = nameDog;
-    map['detail'] = detailDog;
-    map['imagePath'] = urlPicture;
-
-    await firestore.collection('dogs').document().setData(map).then((value) {
-      print('Insert Success');
-      MaterialPageRoute materialPageRoute =
-          MaterialPageRoute(builder: (BuildContext context) => MyHomePage());
-      Navigator.of(context)
-          .pushAndRemoveUntil(materialPageRoute, (value) => false);
-    });
   }
 
   Widget nameInputForm() {
@@ -162,14 +175,15 @@ class _AddListDogState extends State<AddListDog> {
 
   Widget cameraButton() {
     return IconButton(
-        icon: Icon(
-          Icons.add_a_photo,
-          size: 36.0,
-          color: Colors.green[700],
-        ),
-        onPressed: () {
-          chooseImage(ImageSource.camera);
-        });
+      icon: Icon(
+        Icons.add_a_photo,
+        size: 36.0,
+        color: Colors.green[700],
+      ),
+      onPressed: () {
+        chooseImage(ImageSource.camera);
+      },
+    );
   }
 
   Future<void> chooseImage(ImageSource imageSource) async {
@@ -187,14 +201,15 @@ class _AddListDogState extends State<AddListDog> {
 
   Widget galleryButton() {
     return IconButton(
-        icon: Icon(
-          Icons.add_photo_alternate,
-          size: 38.0,
-          color: Colors.green[700],
-        ),
-        onPressed: () {
-          chooseImage(ImageSource.gallery);
-        });
+      icon: Icon(
+        Icons.add_photo_alternate,
+        size: 38.0,
+        color: Colors.green[700],
+      ),
+      onPressed: () {
+        chooseImage(ImageSource.gallery);
+      },
+    );
   }
 
   Widget showButton() {
