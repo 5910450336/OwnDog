@@ -58,7 +58,14 @@ class _PredictDogWidgetState extends State<PredictDogWidget> {
                                     background: Paint()..color = Colors.white,
                                   ),
                                 ),
-                                
+                                // Text(
+                                //   "${_outputs[0]["label"]}",
+                                //   style: TextStyle(
+                                //     color: Colors.black,
+                                //     fontSize: 20.0,
+                                //     background: Paint()..color = Colors.white,
+                                //   ),
+                                // ),
                               ],
                             ),
                           )
@@ -67,15 +74,35 @@ class _PredictDogWidgetState extends State<PredictDogWidget> {
                 ),
               ),
             ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: pickImage,
-        child: Icon(Icons.image),
+      floatingActionButton: Column(mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          FloatingActionButton(
+            onPressed: pickImage,
+            child: Icon(Icons.image),
+          ),
+          SizedBox(height: 10,),
+          FloatingActionButton(
+            onPressed: cameraPickImage,
+            child: Icon(Icons.camera),
+          ),
+        ],
       ),
+      
     );
   }
 
   pickImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    if (image == null) return null;
+    setState(() {
+      _loading = true;
+      _image = image;
+    });
+    classifyImage(image);
+  }
+
+  cameraPickImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.camera);
     if (image == null) return null;
     setState(() {
       _loading = true;
