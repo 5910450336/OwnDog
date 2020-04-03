@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tflite/tflite.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PredictDogWidget extends StatefulWidget {
   @override
@@ -33,27 +34,37 @@ class _PredictDogWidgetState extends State<PredictDogWidget> {
               alignment: Alignment.center,
               child: CircularProgressIndicator(),
             )
-          : Container(
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _image == null ? Container() : Image.file(_image),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  _outputs != null
-                      ? Text(
-                          "${_outputs[0]["label"]}",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20.0,
-                            background: Paint()..color = Colors.white,
-                          ),
-                        )
-                      : Container()
-                ],
+          : SingleChildScrollView(
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _image == null ? Container() : Image.file(_image),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    _outputs != null
+                        ? Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: <Widget>[
+                                Text(
+                                  "${_outputs[0]["label"]}",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 20.0,
+                                    background: Paint()..color = Colors.white,
+                                  ),
+                                ),
+                                
+                              ],
+                            ),
+                          )
+                        : Container()
+                  ],
+                ),
               ),
             ),
       floatingActionButton: FloatingActionButton(

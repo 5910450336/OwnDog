@@ -40,8 +40,8 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget showLogo() {
     return SizedBox(
-      width: 200.0,
-      height: 200.0,
+      width: 300.0,
+      height: 300.0,
       child: FlareActor(
         'assets/flares/Doggo-storyoggo.flr',
         alignment: Alignment.center,
@@ -107,6 +107,7 @@ class _LoginPageState extends State<LoginPage> {
         onSaved: (String value) {
           passwordString = value.trim();
         },
+        obscureText: true,
       ),
     );
   }
@@ -236,9 +237,6 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 showLogo(),
-                SizedBox(
-                  height: 10.0,
-                ),
                 content(),
                 showButton(),
                 SizedBox(

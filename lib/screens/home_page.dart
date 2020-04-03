@@ -72,7 +72,13 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Own Dogs'),
+        title: Text(
+          'OWN DOGS',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontFamily: 'K2D'
+          ),
+        ),
         centerTitle: true,
         elevation: 1.0,
         backgroundColor: Colors.yellowAccent[700],

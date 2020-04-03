@@ -35,3 +35,7 @@ flutter:
     - family: Mitr
       fonts:
         - asset: fonts/Mitr-Regular.ttf
+
+    - family: K2D
+      fonts:
+        - asset: fonts/K2D-Regular.ttf

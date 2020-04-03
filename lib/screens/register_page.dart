@@ -21,14 +21,18 @@ class _RegisterPageState extends State<RegisterPage> {
       tooltip: 'DONE',
       onPressed: () {
         print('Click OK');
-
-        if (_formKey.currentState.validate()) {
+        if (_formKey.currentState.validate() &&
+            tempPassword == passwordString) {
           _formKey.currentState
               .save(); // ถ้าผ่านจะเอาอันที่ onsaved มาเก็บบันทึกค่าไว้
           print(
             'name = $nameString, email = $emailString, password = $passwordString, phone = $phoneString',
           );
           registerThread();
+        } else if (_formKey.currentState.validate() &&
+            tempPassword != passwordString) {
+          myAlert('Re-Password and Password must match',
+              'Please enter the same password.');
         }
       },
     );
@@ -182,40 +186,45 @@ class _RegisterPageState extends State<RegisterPage> {
           return null;
         }
       },
+      onChanged: (String value) {
+        passwordString = value.trim();
+      },
       onSaved: (String value) {
         passwordString = value.trim();
       },
+      obscureText: true,
     );
   }
 
-  // Widget rePasswordInputText() {
-  //   return TextFormField(
-  //     decoration: InputDecoration(
-  //       icon: Icon(
-  //         Icons.lock,
-  //         color: Colors.grey[800],
-  //         size: 35.0,
-  //       ),
-  //       labelText: 'RE-PASSWORD',
-  //       labelStyle: TextStyle(
-  //         fontWeight: FontWeight.bold,
-  //         color: Colors.black,
-  //       ),
-  //       helperText: 'Re-Password must match Password',
-  //       helperStyle: TextStyle(fontStyle: FontStyle.italic),
-  //     ),
-  //     validator: (String value) {
-  //       if (value != tempPassword) {
-  //         return 'password did not match';
-  //       } else {
-  //         return null;
-  //       }
-  //     },
-  //     onSaved: (String value) {
-  //       passwordString = value.trim();
-  //     },
-  //   );
-  // }
+  Widget rePasswordInputText() {
+    return TextFormField(
+      decoration: InputDecoration(
+        icon: Icon(
+          Icons.lock,
+          color: Colors.grey[800],
+          size: 35.0,
+        ),
+        labelText: 'RE-PASSWORD',
+        labelStyle: TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+        helperText: 'Re-Password must match Password',
+        helperStyle: TextStyle(fontStyle: FontStyle.italic),
+      ),
+      validator: (String value) {
+        if (value.length < 6) {
+          return 'Re-Password must match Password';
+        } else {
+          return null;
+        }
+      },
+      onChanged: (String value) {
+        tempPassword = value.trim();
+      },
+      obscureText: true,
+    );
+  }
 
   Widget phoneInputText() {
     return TextFormField(
@@ -263,7 +272,7 @@ class _RegisterPageState extends State<RegisterPage> {
             nameInputText(),
             emailInputText(),
             passwordInputText(),
-            // rePasswordInputText(),
+            rePasswordInputText(),
             phoneInputText(),
           ],
         ),

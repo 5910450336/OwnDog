@@ -32,10 +32,6 @@ class _ProfilePageState extends State<ProfilePage> {
     print('Login = $login\nPhone = $phone');
   }
 
-  Widget showLogin() {
-    return Text('LogIN by $login');
-  }
-
   Widget signOutButton() {
     return IconButton(
       icon: Icon(Icons.exit_to_app),
@@ -111,53 +107,156 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Future<void> _neverSatisfied() async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Rewind and remember'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text('You will never be satisfied.'),
-                Text('You\’re like me. I’m never satisfied.'),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('Regret'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
+  Widget showLogin() {
+    return Text('LogIN by $login');
+  }
+
+  Widget showLogoProfile() {
+    return Padding(
+      padding: EdgeInsets.all(7.0),
+      child: Icon(
+        Icons.face,
+        size: 60,
+      ),
     );
   }
 
-  Widget buildAnimalListItem(BuildContext context, String name) {
-    return Container(
-        padding: EdgeInsets.all(16),
-        child: Text(name, style: TextStyle(fontSize: 22)));
+  Widget showContent() {
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          Card(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+            color: Colors.blueGrey[50],
+            child: Column(
+              children: <Widget>[
+                // Image.network(document['imagePath']),
+                Padding(
+                  padding: EdgeInsets.all(7.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      showLogoProfile(),
+                    ],
+                  ),
+                ),
+
+                Padding(
+                  padding: EdgeInsets.all(7.0),
+                  child: Row(
+                    children: <Widget>[
+                      Icon(Icons.note),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Text(
+                        "$login",
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontFamily: 'K2D',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                Padding(
+                  padding: EdgeInsets.all(7.0),
+                  child: Row(
+                    children: <Widget>[
+                      Icon(Icons.call),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Text(
+                        '0122334567',
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontFamily: 'K2D',
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+          Card(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+            color: Colors.indigo[50],
+            child: Padding(
+              padding: EdgeInsets.all(7.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Icon(Icons.pets),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Text(
+                        'My pet1',
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontFamily: 'K2D',
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+          Card(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+            color: Colors.indigo[50],
+            child: Padding(
+              padding: EdgeInsets.all(7.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Icon(Icons.pets),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Text(
+                        'My pet2',
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontFamily: 'K2D',
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text('Settings'),
+        backgroundColor: Colors.indigoAccent,
+        elevation: 1.0,
         actions: <Widget>[
           signOutButton(),
         ],
       ),
       body: ListView(
         children: <Widget>[
-          buildAnimalListItem(context, "Dog"),
-          buildAnimalListItem(context, "Cat"),
-          showLogin(),
+          showContent(),
         ],
       ),
     );

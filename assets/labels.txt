@@ -1,2 +1,12 @@
-0 Dog
-1 Cat
+0 big
+1 black
+2 brown
+3 dwarf
+4 jinbao
+5 Roxxie
+6 silver
+7 small
+8 tall
+9 tiny
+10 white
+11 sanim
