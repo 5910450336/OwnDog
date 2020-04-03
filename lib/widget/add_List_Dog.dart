@@ -50,8 +50,8 @@ class _AddListDogState extends State<AddListDog> {
               'REGISTER DOG',
               style: TextStyle(color: Colors.white),
             ),
-            shape: new RoundedRectangleBorder(
-              borderRadius: new BorderRadius.circular(20.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
             ),
           ),
         ),
@@ -77,21 +77,22 @@ class _AddListDogState extends State<AddListDog> {
 
   Future<void> showAlert(String title, String message) async {
     showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(title),
-            content: Text(message),
-            actions: <Widget>[
-              FlatButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('OK'),
-              )
-            ],
-          );
-        });
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            )
+          ],
+        );
+      },
+    );
   }
 
   Future<void> inserValueToFirestore() async {
@@ -106,7 +107,8 @@ class _AddListDogState extends State<AddListDog> {
       print('Insert Success');
       MaterialPageRoute materialPageRoute =
           MaterialPageRoute(builder: (BuildContext context) => MyHomePage());
-      Navigator.of(context).pushAndRemoveUntil(materialPageRoute, (value) => false);
+      Navigator.of(context)
+          .pushAndRemoveUntil(materialPageRoute, (value) => false);
     });
   }
 

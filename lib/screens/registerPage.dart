@@ -10,7 +10,7 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   // Explicit
-  final _formKey = new GlobalKey<FormState>(); //key ที่เช็ค validation
+  final _formKey = GlobalKey<FormState>(); //key ที่เช็ค validation
   String nameString, emailString, passwordString, tempPassword, phoneString;
 
   // Method

@@ -137,8 +137,8 @@ class _LoginPageState extends State<LoginPage> {
             color: Colors.black,
           ),
         ),
-        shape: new RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(10.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
         ),
         onPressed: () {
           _formKey.currentState.save(); // เอาค่า email/password ส่งไป firebase
@@ -157,13 +157,13 @@ class _LoginPageState extends State<LoginPage> {
       child: RaisedButton(
         color: Colors.blueGrey[100],
         child: Text('REGISTER'),
-        shape: new RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(10.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
         ),
         onPressed: () {
           print("Click Register");
 
-          MaterialPageRoute materialPageRoute = new MaterialPageRoute(
+          MaterialPageRoute materialPageRoute = MaterialPageRoute(
               builder: (BuildContext context) => RegisterPage());
           Navigator.of(context).push(materialPageRoute);
         },
@@ -202,12 +202,12 @@ class _LoginPageState extends State<LoginPage> {
 
   void alertScaffold(String msg) {
     scaffoldKey.currentState.showSnackBar(SnackBar(
-        // Show Error
-        content: Text(msg, style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.red,
-      ));
+      // Show Error
+      content: Text(msg, style: TextStyle(color: Colors.white)),
+      backgroundColor: Colors.red,
+    ));
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
