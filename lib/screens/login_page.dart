@@ -227,7 +227,10 @@ class _LoginPageState extends State<LoginPage> {
       body: Container(
         decoration: BoxDecoration(
           gradient: RadialGradient(
-            colors: [Colors.yellow[100], Colors.yellowAccent[700]],
+            colors: [
+              Colors.yellow[100],
+              Colors.yellowAccent[700],
+            ],
             radius: 0.7,
           ),
         ),

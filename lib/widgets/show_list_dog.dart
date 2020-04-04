@@ -38,8 +38,10 @@ class ShowListDog extends StatelessWidget {
                     padding: EdgeInsets.all(7.0),
                     child: Text(
                       'Like',
-                      style: TextStyle(fontSize: 18.0, fontFamily: 'Mitr',),
-                      
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontFamily: 'Mitr',
+                      ),
                     ),
                   ),
                   Padding(
@@ -50,7 +52,10 @@ class ShowListDog extends StatelessWidget {
                     padding: EdgeInsets.all(7.0),
                     child: Text(
                       'Comments',
-                      style: TextStyle(fontSize: 18.0, fontFamily: 'Mitr',),
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontFamily: 'Mitr',
+                      ),
                     ),
                   )
                 ],

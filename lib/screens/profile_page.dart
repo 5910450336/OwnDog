@@ -127,7 +127,8 @@ class _ProfilePageState extends State<ProfilePage> {
         children: <Widget>[
           Card(
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0)),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
             color: Colors.blueGrey[50],
             child: Column(
               children: <Widget>[
@@ -184,7 +185,8 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           Card(
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0)),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
             color: Colors.indigo[50],
             child: Padding(
               padding: EdgeInsets.all(7.0),
@@ -212,7 +214,8 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           Card(
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0)),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
             color: Colors.indigo[50],
             child: Padding(
               padding: EdgeInsets.all(7.0),

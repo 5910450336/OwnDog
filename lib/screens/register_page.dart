@@ -260,10 +260,11 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Colors.yellow.shade700,
-          title: Text('REGISTER'),
-          elevation: 1.0,
-          actions: <Widget>[okRegisterButton()]),
+        backgroundColor: Colors.yellow.shade700,
+        title: Text('REGISTER'),
+        elevation: 1.0,
+        actions: <Widget>[okRegisterButton()],
+      ),
       body: Form(
         key: _formKey,
         child: ListView(
