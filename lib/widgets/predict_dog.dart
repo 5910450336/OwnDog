@@ -38,8 +38,6 @@ class _PredictDogWidgetState extends State<PredictDogWidget> {
     await collectionReference.snapshots().listen((respone) {
       List<DocumentSnapshot> snapshots = respone.documents;
       for (var snapshot in snapshots) {
-        print('Name = ${snapshot.data['name']}');
-
         Dog dogM =
             Dog.fromMap(snapshot.data); // โยนค่าใน firebase เข้าไปใน object
 
@@ -53,7 +51,6 @@ class _PredictDogWidgetState extends State<PredictDogWidget> {
   Widget showLoopDog() {
     for (int i = 0; i < dogModels.length; i++) {
       if (_outputs[0]["label"].contains(dogModels[i].name)) {
-        print("DOGS Length=${dogModels[i].name}");
         return Column(
           children: <Widget>[
             Text(

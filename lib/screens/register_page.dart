@@ -20,19 +20,17 @@ class _RegisterPageState extends State<RegisterPage> {
       icon: Icon(Icons.done),
       tooltip: 'DONE',
       onPressed: () {
-        print('Click OK');
         if (_formKey.currentState.validate() &&
             tempPassword == passwordString) {
           _formKey.currentState
               .save(); // ถ้าผ่านจะเอาอันที่ onsaved มาเก็บบันทึกค่าไว้
-          print(
-            'name = $nameString, email = $emailString, password = $passwordString, phone = $phoneString',
-          );
           registerThread();
         } else if (_formKey.currentState.validate() &&
             tempPassword != passwordString) {
-          myAlert('Re-Password and Password must match',
-              'Please enter the same password.');
+          myAlert(
+            'Re-Password and Password must match',
+            'Please enter the same password.',
+          );
         }
       },
     );
@@ -46,13 +44,10 @@ class _RegisterPageState extends State<RegisterPage> {
         .createUserWithEmailAndPassword(
             email: emailString, password: passwordString)
         .then((response) {
-      print('Register Success for Email = $emailString');
-
       setupDisplayName();
     }).catchError((response) {
       String title = response.code;
       String message = response.message;
-      print('title = $title, message = $message');
       myAlert(title, message);
     });
   }

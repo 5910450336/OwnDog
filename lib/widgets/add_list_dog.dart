@@ -28,8 +28,6 @@ class _AddListDogState extends State<AddListDog> {
           child: RaisedButton.icon(
             color: Colors.yellow[700],
             onPressed: () {
-              print('Register DOG');
-
               if (file == null) {
                 showAlert(
                     'No image selected', 'Please Click Camera or Gallery');
@@ -71,7 +69,6 @@ class _AddListDogState extends State<AddListDog> {
     //ถ้าอัพโลหดสำเร็จมันจะเก็บ url ภาพนั้นไว้
     urlPicture =
         await (await storageUploadTask.onComplete).ref.getDownloadURL();
-    print('urlPicture = $urlPicture');
     inserValueToFirestore(); // method up value to firestore
   }
 
@@ -94,7 +91,6 @@ class _AddListDogState extends State<AddListDog> {
 
     await firestore.collection('dogs').document().setData(map).then(
       (value) {
-        print('Insert Success');
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
             builder: (BuildContext context) => MyHomePage(),

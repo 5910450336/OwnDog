@@ -29,7 +29,6 @@ class _ProfilePageState extends State<ProfilePage> {
       // ทำการ setstate refresh ใหม่
       login = firebaseUser.displayName;
     });
-    print('Login = $login\nPhone = $phone');
   }
 
   Widget signOutButton() {

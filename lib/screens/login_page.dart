@@ -149,9 +149,6 @@ class _LoginPageState extends State<LoginPage> {
         ),
         onPressed: () {
           _formKey.currentState.save(); // เอาค่า email/password ส่งไป firebase
-          print(
-            "Click LOG IN\nemail = $emailString, password = $passwordString",
-          );
           checkAuthen();
         },
       ),
