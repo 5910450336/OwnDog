@@ -54,34 +54,48 @@ class _PredictDogWidgetState extends State<PredictDogWidget> {
     for (int i = 0; i < dogModels.length; i++) {
       if (_outputs[0]["label"].contains(dogModels[i].name)) {
         print("DOGS Length=${dogModels[i].name}");
-        return Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            children: <Widget>[
-              Text(
-                "ANNOUNCE",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 30.0,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'K2D',
-                ),
+        return Column(
+          children: <Widget>[
+            Text(
+              "ANNOUNCE",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 30.0,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'K2D',
               ),
-              Image.network(dogModels[i].imagePath),
-              Text(
-                "Name: ${dogModels[i].name} ${dogModels[i].detail}",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20.0,
-                  fontFamily: 'K2D',
-                ),
+            ),
+            Image.network(dogModels[i].imagePath),
+            Text(
+              "Name: ${dogModels[i].name} ${dogModels[i].detail}",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 20.0,
+                fontFamily: 'K2D',
               ),
-            ],
-          ),
+            ),
+          ],
         );
       }
     }
     return Container();
+  }
+
+  Widget showUserPicture() {
+    return Column(
+      children: <Widget>[
+        Text(
+          "MY PICTURE",
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 30.0,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'K2D',
+          ),
+        ),
+        Image.file(_image)
+      ],
+    );
   }
 
   @override
@@ -95,26 +109,29 @@ class _PredictDogWidgetState extends State<PredictDogWidget> {
           : SingleChildScrollView(
               child: Container(
                 width: MediaQuery.of(context).size.width,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _image == null ? Container() : Image.file(_image),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    _outputs != null
-                        ? Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              children: <Widget>[
-                                // readDocument(),
-                                showLoopDog(),
-                              ],
-                            ),
-                          )
-                        : Container()
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _image == null ? Container() : showUserPicture(),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      _outputs != null
+                          ? Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: <Widget>[
+                                  // readDocument(),
+                                  showLoopDog(),
+                                ],
+                              ),
+                            )
+                          : Container()
+                    ],
+                  ),
                 ),
               ),
             ),
