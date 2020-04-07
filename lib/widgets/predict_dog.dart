@@ -16,6 +16,7 @@ class _PredictDogWidgetState extends State<PredictDogWidget> {
   bool _loading = false;
   DocumentSnapshot documentSnapshot;
   List<Dog> dogModels = List();
+  Firestore firestore = Firestore.instance;
 
   @override
   void initState() {
@@ -31,21 +32,19 @@ class _PredictDogWidgetState extends State<PredictDogWidget> {
   }
 
   Future<void> readAllData() async {
-    Firestore firestore = Firestore.instance;
-    // collection จาก firestore มีได้มากกว่าหนึ่ง
     CollectionReference collectionReference = firestore.collection('dogs');
-    //snapshot จะเอาทั้งสามอันที่ link กันมา collection, document, field
-    await collectionReference.snapshots().listen((respone) {
-      List<DocumentSnapshot> snapshots = respone.documents;
-      for (var snapshot in snapshots) {
-        Dog dogM =
-            Dog.fromMap(snapshot.data); // โยนค่าใน firebase เข้าไปใน object
+    collectionReference.snapshots().listen(
+      (respone) {
+        List<DocumentSnapshot> snapshots = respone.documents;
+        for (var snapshot in snapshots) {
+          Dog dogM = Dog.fromMap(snapshot.data);
 
-        setState(() {
-          dogModels.add(dogM); // มันได้ค่ามาปุ๊ปก็จะให้ทำrefresh statelessใหม่
-        });
-      }
-    });
+          setState(() {
+            dogModels.add(dogM);
+          });
+        }
+      },
+    );
   }
 
   Widget showLoopDog() {
@@ -136,14 +135,20 @@ class _PredictDogWidgetState extends State<PredictDogWidget> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           FloatingActionButton(
-            onPressed: pickImage,
+            onPressed: () async {
+              await pickImage(ImageSource.gallery);
+              classifyImage(_image);
+            },
             child: Icon(Icons.image),
           ),
           SizedBox(
             height: 10,
           ),
           FloatingActionButton(
-            onPressed: cameraPickImage,
+            onPressed: () async {
+              await pickImage(ImageSource.camera);
+              classifyImage(_image);
+            },
             child: Icon(Icons.camera),
           ),
         ],
@@ -151,24 +156,13 @@ class _PredictDogWidgetState extends State<PredictDogWidget> {
     );
   }
 
-  pickImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+  Future<void> pickImage(ImageSource soruce) async {
+    var image = await ImagePicker.pickImage(source: soruce);
     if (image == null) return null;
     setState(() {
       _loading = true;
       _image = image;
     });
-    classifyImage(image);
-  }
-
-  cameraPickImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.camera);
-    if (image == null) return null;
-    setState(() {
-      _loading = true;
-      _image = image;
-    });
-    classifyImage(image);
   }
 
   classifyImage(File image) async {

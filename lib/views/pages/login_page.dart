@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
-import 'package:own_dog/screens/home_page.dart';
-import 'package:own_dog/screens/register_page.dart';
+import 'package:own_dog/views/pages/home_page.dart';
+import 'package:own_dog/views/pages/register_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -10,13 +10,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  // Explicit
   final _formKey = GlobalKey<FormState>();
-  GlobalKey<ScaffoldState> scaffoldKey =
-      GlobalKey(); // เอาไว้เรียกใช้ scaffold จากที่อื่นๆ
-  String emailString, passwordString;
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+  String emailString;
+  String passwordString;
 
-  // Method
   @override
   void initState() {
     super.initState();
@@ -24,10 +22,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> checkStatus() async {
-    // check สถานะว่าเครื่องเราทำการ Log in อยู่หรือเปล่า
     FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-    FirebaseUser firebaseUser =
-        await firebaseAuth.currentUser(); //ให้ทำการ connect กับ Firebase
+    FirebaseUser firebaseUser = await firebaseAuth.currentUser();
     if (firebaseUser != null) {
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
@@ -80,9 +76,7 @@ class _LoginPageState extends State<LoginPage> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        onSaved: (String value) {
-          emailString = value.trim();
-        },
+        onSaved: (String value) => emailString = value.trim(),
       ),
     );
   }
@@ -104,16 +98,13 @@ class _LoginPageState extends State<LoginPage> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        onSaved: (String value) {
-          passwordString = value.trim();
-        },
+        onSaved: (String value) => passwordString = value.trim(),
         obscureText: true,
       ),
     );
   }
 
   Widget content() {
-    // appname/ username/passwordTextField
     return Form(
       key: _formKey,
       child: Column(
@@ -147,10 +138,7 @@ class _LoginPageState extends State<LoginPage> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
-        onPressed: () {
-          _formKey.currentState.save(); // เอาค่า email/password ส่งไป firebase
-          checkAuthen();
-        },
+        onPressed: () => checkAuthen(),
       ),
     );
   }
@@ -188,10 +176,13 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> checkAuthen() async {
+    _formKey.currentState.save();
     FirebaseAuth firebaseAuth = FirebaseAuth.instance;
     await firebaseAuth
         .signInWithEmailAndPassword(
-            email: emailString, password: passwordString)
+          email: emailString,
+          password: passwordString,
+        )
         .then(
           (response) => Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
@@ -210,7 +201,6 @@ class _LoginPageState extends State<LoginPage> {
   void alertScaffold(String msg) {
     scaffoldKey.currentState.showSnackBar(
       SnackBar(
-        // Show Error
         content: Text(msg, style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.red,
       ),

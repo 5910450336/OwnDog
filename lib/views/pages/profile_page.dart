@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:own_dog/screens/login_page.dart';
+import 'package:own_dog/views/login_page.dart';
 import 'dart:io' show Platform;
 
 class ProfilePage extends StatefulWidget {
@@ -10,11 +10,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  //Explicit
   String login = '...';
-  String phone = '...';
 
-  //Method
   @override
   void initState() {
     super.initState();
@@ -23,10 +20,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> findDisplayName() async {
     FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-    FirebaseUser firebaseUser =
-        await firebaseAuth.currentUser(); // ดึง data ที่ user login ในขณะมา
+    FirebaseUser firebaseUser = await firebaseAuth.currentUser();
     setState(() {
-      // ทำการ setstate refresh ใหม่
       login = firebaseUser.displayName;
     });
   }
@@ -35,9 +30,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return IconButton(
       icon: Icon(Icons.exit_to_app),
       tooltip: 'Sign Out',
-      onPressed: () {
-        myAlert();
-      },
+      onPressed: () => myAlert(),
     );
   }
 
@@ -80,7 +73,6 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> processSignOut() async {
-    // method sign out
     FirebaseAuth firebaseAuth = FirebaseAuth.instance;
     await firebaseAuth.signOut().then(
       (response) {
@@ -107,7 +99,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget showLogin() {
-    return Text('LogIN by $login');
+    return Text('LogIn by $login');
   }
 
   Widget showLogoProfile() {

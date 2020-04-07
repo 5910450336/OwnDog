@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:own_dog/screens/profile_page.dart';
+import 'package:own_dog/views/pages/profile_page.dart';
 import 'package:own_dog/widgets/predict_dog.dart';
 import 'package:own_dog/widgets/show_list_dog.dart';
 import 'package:own_dog/widgets/add_list_dog.dart';
@@ -10,12 +10,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // Explcit
   List<Widget> showWidgets = [ShowListDog(), PredictDogWidget(), AddListDog()];
   int index = 0;
-  String login = '...';
 
-  //Method
   Widget profileButton() {
     return IconButton(
       icon: Icon(
@@ -74,7 +71,10 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(
           'OWN DOGS',
-          style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'K2D'),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontFamily: 'K2D',
+          ),
         ),
         centerTitle: true,
         elevation: 1.0,

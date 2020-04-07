@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-import 'package:own_dog/screens/home_page.dart';
+import 'package:own_dog/views/pages/home_page.dart';
 
-class RegisterPage extends StatefulWidget {
-  @override
-  _RegisterPageState createState() => _RegisterPageState();
-}
+class RegisterPage extends StatelessWidget {
+  static BuildContext context;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  static String nameString;
+  static String emailString;
+  static String passwordString;
+  static String tempPassword;
+  static String phoneString;
 
-class _RegisterPageState extends State<RegisterPage> {
-  // Explicit
-  final GlobalKey<FormState> _formKey =
-      GlobalKey<FormState>(); //key ที่เช็ค validation
-  String nameString, emailString, passwordString, tempPassword, phoneString;
-
-  // Method
   Widget okRegisterButton() {
     return IconButton(
       icon: Icon(Icons.done),
@@ -22,8 +20,7 @@ class _RegisterPageState extends State<RegisterPage> {
       onPressed: () {
         if (_formKey.currentState.validate() &&
             tempPassword == passwordString) {
-          _formKey.currentState
-              .save(); // ถ้าผ่านจะเอาอันที่ onsaved มาเก็บบันทึกค่าไว้
+          _formKey.currentState.save();
           registerThread();
         } else if (_formKey.currentState.validate() &&
             tempPassword != passwordString) {
@@ -37,12 +34,11 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future<void> registerThread() async {
-    // Method Add Email/Password to Firebase
-    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
     await firebaseAuth
         .createUserWithEmailAndPassword(
-            email: emailString, password: passwordString)
+      email: emailString,
+      password: passwordString,
+    )
         .then((response) {
       setupDisplayName();
     }).catchError((response) {
@@ -53,7 +49,6 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future<void> setupDisplayName() async {
-    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
     await firebaseAuth.currentUser().then(
       (response) {
         UserUpdateInfo userUpdateInfo = UserUpdateInfo();
@@ -70,7 +65,6 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void myAlert(String title, String message) {
-    // Show Alert Box
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -123,8 +117,7 @@ class _RegisterPageState extends State<RegisterPage> {
           return null;
         }
       },
-      onSaved: (String value) =>
-          nameString = value.trim(), // ตัดช่องว่างอัตโนมัติ
+      onSaved: (String value) => nameString = value.trim(),
     );
   }
 
@@ -152,9 +145,7 @@ class _RegisterPageState extends State<RegisterPage> {
           return null;
         }
       },
-      onSaved: (String value) {
-        emailString = value.trim();
-      },
+      onSaved: (String value) => emailString = value.trim(),
     );
   }
 
@@ -174,19 +165,10 @@ class _RegisterPageState extends State<RegisterPage> {
         helperText: 'Password must contain at least 6 characters and Number',
         helperStyle: TextStyle(fontStyle: FontStyle.italic),
       ),
-      validator: (String value) {
-        if (value.length < 6) {
-          return 'Password More 6 character';
-        } else {
-          return null;
-        }
-      },
-      onChanged: (String value) {
-        passwordString = value.trim();
-      },
-      onSaved: (String value) {
-        passwordString = value.trim();
-      },
+      validator: (String value) =>
+          value.length < 6 ? 'Password More 6 character' : null,
+      onChanged: (String value) => passwordString = value.trim(),
+      onSaved: (String value) => passwordString = value.trim(),
       obscureText: true,
     );
   }
@@ -207,16 +189,9 @@ class _RegisterPageState extends State<RegisterPage> {
         helperText: 'Re-Password must match Password',
         helperStyle: TextStyle(fontStyle: FontStyle.italic),
       ),
-      validator: (String value) {
-        if (value.length < 6) {
-          return 'Re-Password must match Password';
-        } else {
-          return null;
-        }
-      },
-      onChanged: (String value) {
-        tempPassword = value.trim();
-      },
+      validator: (String value) =>
+          value.length < 6 ? 'Re-Password must match Password' : null,
+      onChanged: (String value) => tempPassword = value.trim(),
       obscureText: true,
     );
   }
@@ -245,9 +220,7 @@ class _RegisterPageState extends State<RegisterPage> {
           return null;
         }
       },
-      onSaved: (String value) {
-        phoneString = value.trim(); // ใส่ค่า phone
-      },
+      onSaved: (String value) => phoneString = value.trim(),
     );
   }
 

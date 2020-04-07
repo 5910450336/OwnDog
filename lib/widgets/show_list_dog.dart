@@ -1,72 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:own_dog/widgets/dog_card.dart';
 
 class ShowListDog extends StatelessWidget {
-  //Method
-  Container dogCard(DocumentSnapshot document) {
-    return Container(
-      decoration: BoxDecoration(color: Colors.grey[300]),
-      child: Card(
-        child: Column(
-          children: <Widget>[
-            Image.network(document['imagePath']),
-            Padding(
-              padding: EdgeInsets.all(7.0),
-              child: Row(
-                children: <Widget>[
-                  Flexible(
-                    child: Text(
-                      "Name: ${document['name']} ${document['detail']}",
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        fontFamily: 'K2D',
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(7.0),
-              child: Row(
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.all(7.0),
-                    child: Icon(Icons.thumb_up),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(7.0),
-                    child: Text(
-                      'Like',
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        fontFamily: 'Mitr',
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(7.0),
-                    child: Icon(Icons.comment),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(7.0),
-                    child: Text(
-                      'Comments',
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        fontFamily: 'Mitr',
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -82,7 +18,7 @@ class ShowListDog extends StatelessWidget {
             return ListView(
               children: snapshot.data.documents.map(
                 (DocumentSnapshot document) {
-                  return dogCard(document);
+                  return DogCard(document: document);
                 },
               ).toList(),
             );

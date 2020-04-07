@@ -1,11 +1,11 @@
 import 'dart:io';
-import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:own_dog/screens/home_page.dart';
+import 'package:own_dog/views/pages/home_page.dart';
+import 'package:uuid/uuid.dart';
 
 class AddListDog extends StatefulWidget {
   @override
@@ -13,11 +13,15 @@ class AddListDog extends StatefulWidget {
 }
 
 class _AddListDogState extends State<AddListDog> {
-  // Explicit
   File file;
-  String nameDog, detailDog, urlPicture;
+  String nameDog;
+  String detailDog;
+  String urlPicture;
 
-  // Method
+  Firestore firestore = Firestore.instance;
+
+  Uuid uuid = Uuid();
+
   Widget uploadButton() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -27,7 +31,7 @@ class _AddListDogState extends State<AddListDog> {
           height: 40,
           child: RaisedButton.icon(
             color: Colors.yellow[700],
-            onPressed: () {
+            onPressed: () async {
               if (file == null) {
                 showAlert(
                     'No image selected', 'Please Click Camera or Gallery');
@@ -36,8 +40,8 @@ class _AddListDogState extends State<AddListDog> {
               } else if (detailDog == null || detailDog.isEmpty) {
                 showAlert('No Detail', 'Please fill your dog detail');
               } else {
-                // Upload Value to Firebase
-                uploadPictureToStorage();
+                urlPicture = await uploadPictureToStorage(file);
+                inserValueToFirestore();
               }
             },
             icon: Icon(
@@ -57,33 +61,16 @@ class _AddListDogState extends State<AddListDog> {
     );
   }
 
-  Future<void> uploadPictureToStorage() async {
-    Random random = Random();
-    int rand = random.nextInt(100000);
-
-    FirebaseStorage firebaseStorage = FirebaseStorage.instance;
-    StorageReference storageReference =
-        firebaseStorage.ref().child('Dog/dog$rand.jpg');
-    StorageUploadTask storageUploadTask = storageReference.putFile(file);
-
-    //ถ้าอัพโลหดสำเร็จมันจะเก็บ url ภาพนั้นไว้
-    urlPicture =
-        await (await storageUploadTask.onComplete).ref.getDownloadURL();
-    inserValueToFirestore(); // method up value to firestore
+  Future<String> uploadPictureToStorage(File imagePath) async {
+    final StorageReference firebaseStorageRef =
+        FirebaseStorage.instance.ref().child('${uuid.v1()}.png');
+    final StorageUploadTask task = firebaseStorageRef.putFile(imagePath);
+    StorageTaskSnapshot storageTaskSnapshot = await task.onComplete;
+    String downloadUrl = await storageTaskSnapshot.ref.getDownloadURL();
+    return downloadUrl;
   }
 
-  // Future<String> onImageUploading(File imagePath) async {
-  //   final StorageReference firebaseStorageRef =
-  //       FirebaseStorage.instance.ref().child('${Uuid().v1()}.png');
-  //   final StorageUploadTask task = firebaseStorageRef.putFile(imagePath);
-  //   StorageTaskSnapshot storageTaskSnapshot = await task.onComplete;
-  //   String downloadUrl = await storageTaskSnapshot.ref.getDownloadURL();
-  //   return downloadUrl;
-  // }
-
   Future<void> inserValueToFirestore() async {
-    Firestore firestore = Firestore.instance;
-
     Map<String, dynamic> map = Map();
     map['name'] = nameDog;
     map['detail'] = detailDog;
@@ -110,9 +97,7 @@ class _AddListDogState extends State<AddListDog> {
           content: Text(message),
           actions: <Widget>[
             FlatButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+              onPressed: () => Navigator.of(context).pop(),
               child: Text('OK'),
             )
           ],
@@ -138,9 +123,7 @@ class _AddListDogState extends State<AddListDog> {
             color: Colors.orange[900],
           ),
         ),
-        onChanged: (String text) {
-          nameDog = text.trim();
-        },
+        onChanged: (String text) => nameDog = text.trim(),
       ),
     );
   }
@@ -162,9 +145,7 @@ class _AddListDogState extends State<AddListDog> {
             color: Colors.orange[900],
           ),
         ),
-        onChanged: (String text) {
-          detailDog = text.trim();
-        },
+        onChanged: (String text) => detailDog = text.trim(),
       ),
     );
   }
@@ -176,9 +157,7 @@ class _AddListDogState extends State<AddListDog> {
         size: 36.0,
         color: Colors.green[700],
       ),
-      onPressed: () {
-        chooseImage(ImageSource.camera);
-      },
+      onPressed: () => chooseImage(ImageSource.camera),
     );
   }
 
@@ -202,9 +181,7 @@ class _AddListDogState extends State<AddListDog> {
         size: 38.0,
         color: Colors.green[700],
       ),
-      onPressed: () {
-        chooseImage(ImageSource.gallery);
-      },
+      onPressed: () => chooseImage(ImageSource.gallery),
     );
   }
 
@@ -221,7 +198,6 @@ class _AddListDogState extends State<AddListDog> {
   Widget showImage() {
     return Container(
       padding: EdgeInsets.all(10.0),
-      // color: Colors.brown,
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.width * 0.5,
       child: file == null ? Image.asset('images/pic.png') : Image.file(file),
