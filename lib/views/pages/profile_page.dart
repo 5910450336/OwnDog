@@ -10,7 +10,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  String login = '...';
+  String displayName;
 
   @override
   void initState() {
@@ -22,7 +22,7 @@ class _ProfilePageState extends State<ProfilePage> {
     FirebaseAuth firebaseAuth = FirebaseAuth.instance;
     FirebaseUser firebaseUser = await firebaseAuth.currentUser();
     setState(() {
-      login = firebaseUser.displayName;
+      displayName = firebaseUser.displayName;
     });
   }
 
@@ -99,7 +99,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget showLogin() {
-    return Text('LogIn by $login');
+    return Text('LogIn by $displayName');
   }
 
   Widget showLogoProfile() {
@@ -123,7 +123,6 @@ class _ProfilePageState extends State<ProfilePage> {
             color: Colors.blueGrey[50],
             child: Column(
               children: <Widget>[
-                // Image.network(document['imagePath']),
                 Padding(
                   padding: EdgeInsets.all(7.0),
                   child: Column(
@@ -133,7 +132,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     ],
                   ),
                 ),
-
                 Padding(
                   padding: EdgeInsets.all(7.0),
                   child: Row(
@@ -143,7 +141,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         width: 20,
                       ),
                       Text(
-                        "$login",
+                        "$displayName",
                         style: TextStyle(
                           fontSize: 18.0,
                           fontFamily: 'K2D',
@@ -152,7 +150,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     ],
                   ),
                 ),
-
                 Padding(
                   padding: EdgeInsets.all(7.0),
                   child: Row(
