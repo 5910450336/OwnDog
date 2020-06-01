@@ -162,14 +162,15 @@ class _AddListDogState extends State<AddListDog> {
   }
 
   Future<void> chooseImage(ImageSource imageSource) async {
+    final _picker = ImagePicker();
     try {
-      var object = await ImagePicker.pickImage(
+      PickedFile object = await _picker.getImage(
         source: imageSource,
         maxWidth: 800.0,
         maxHeight: 800.0,
       );
       setState(() {
-        file = object;
+        file = File(object.path);
       });
     } catch (e) {}
   }
