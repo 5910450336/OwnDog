@@ -157,11 +157,12 @@ class _PredictDogWidgetState extends State<PredictDogWidget> {
   }
 
   Future<void> pickImage(ImageSource soruce) async {
-    var image = await ImagePicker.pickImage(source: soruce);
+    final _picker = ImagePicker();
+    PickedFile image = await _picker.getImage(source: soruce);
     if (image == null) return null;
     setState(() {
       _loading = true;
-      _image = image;
+      _image = File(image.path);
     });
   }
 
